@@ -77,12 +77,12 @@ SELECT * FROM employees
 WHERE department = 14;
 
 --task8
-SELECT * FROM employees
-WHERE department = 37 OR department = 77;
+SELECT * FROM employees WHERE department = 37
+    UNION
+SELECT * FROM employees WHERE department = 77;
 
 --task9
-SELECT SUM(budget)
-FROM departments;
+SELECT sum(budget) AS budget_sum FROM departments;
 
 --task10
 SELECT department, COUNT(*) AS employee_count
@@ -90,10 +90,8 @@ FROM employees
 GROUP BY department;
 
 --task11
-SELECT department, COUNT(*) AS employee_count
-FROM employees
-GROUP BY department
-HAVING COUNT(*) > 2;
+SELECT department FROM employees
+GROUP BY department HAVING count(employees) > 2;
 
 --task12
 SELECT name FROM departments
@@ -102,9 +100,8 @@ LIMIT 1 OFFSET 1;
 
 
 --task13
-SELECT name FROM departments
-ORDER BY budget ASC
-LIMIT 1 OFFSET 1;
+SELECT name, lastname FROM employees
+WHERE department = (SELECT code FROM departments ORDER BY budget LIMIT 1);
 
 --task14
 SELECT name FROM employees
@@ -118,24 +115,19 @@ WHERE city = 'Almaty';
 --task15
 SELECT * FROM departments
 WHERE budget > 60000
-ORDER BY budget ASC, code DESC;
+ORDER BY budget, code DESC;
 
 --task16
-UPDATE departments
-SET budget = budget * 0.9
-WHERE code = (
-    SELECT code FROM departments
-    ORDER BY budget ASC
-    LIMIT 1
-    );
+UPDATE departments SET budget = budget * 0.9
+    WHERE budget = (SELECT budget FROM departments ORDER BY budget LIMIT 1);
 
 --task17
-UPDATE employees
-SET department = 14
-WHERE department = 77;
+UPDATE employees SET department = (SELECT code FROM departments WHERE name = 'IT')
+    WHERE department = (SELECT code FROM departments WHERE name = 'Research');
 
 --task18
 DELETE FROM employees
-WHERE department = 14;
+       WHERE department = (SELECT code FROM departments WHERE name = 'IT');
 
+--task19
 DELETE FROM employees;
