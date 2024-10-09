@@ -58,7 +58,7 @@ insert into warehouses values (6, 'New York', 3);
 insert into boxes values ('H5RT', 'Papers', 200, 2);
 
 -- Task 11
-update boxes set value = value * 0.75 where code = (select distinct on (value) code from boxes order by value desc limit 1 offset 2);
+update boxes set value = value * 0.85 where code = (select distinct on (value) code from boxes order by value desc limit 1 offset 2);
 
 -- Task 12
 delete from boxes where value < 150;
